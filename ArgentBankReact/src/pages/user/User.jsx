@@ -1,3 +1,4 @@
+import Account from "../../components/account/Account";
 import Layout from "../../layout/Layout";
 
 const User = () => {
@@ -13,36 +14,21 @@ const User = () => {
           <button class="edit-button">Edit Name</button>
         </div>
         <h2 class="sr-only">Accounts</h2>
-        <section class="account">
-          <div class="account-content-wrapper">
-            <h3 class="account-title">Argent Bank Checking (x8349)</h3>
-            <p class="account-amount">$2,082.79</p>
-            <p class="account-amount-description">Available Balance</p>
-          </div>
-          <div class="account-content-wrapper cta">
-            <button class="transaction-button">View transactions</button>
-          </div>
-        </section>
-        <section class="account">
-          <div class="account-content-wrapper">
-            <h3 class="account-title">Argent Bank Savings (x6712)</h3>
-            <p class="account-amount">$10,928.42</p>
-            <p class="account-amount-description">Available Balance</p>
-          </div>
-          <div class="account-content-wrapper cta">
-            <button class="transaction-button">View transactions</button>
-          </div>
-        </section>
-        <section class="account">
-          <div class="account-content-wrapper">
-            <h3 class="account-title">Argent Bank Credit Card (x8349)</h3>
-            <p class="account-amount">$184.30</p>
-            <p class="account-amount-description">Current Balance</p>
-          </div>
-          <div class="account-content-wrapper cta">
-            <button class="transaction-button">View transactions</button>
-          </div>
-        </section>
+        <Account 
+        accName="Argent Bank Checking"
+        accId="x8349"
+        accBalance="2,082.79"
+        />
+        <Account 
+        accName="Argent Bank Savings"
+        accId="x6712"
+        accBalance="10,928.42"
+        />
+        <Account 
+        accName="Argent Bank Credit Card"
+        accId="x8349"
+        accBalance="184.30"
+        />
       </div>
     </Layout>
   );
