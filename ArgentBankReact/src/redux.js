@@ -1,16 +1,29 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { configureStore, createSlice } from "@reduxjs/toolkit";
 
 const userSlice = createSlice({
     name: "userConnexion",
-    initialState : [],
+    initialState: {
+        token: '',
+        profile: {},
+    },
     reducers: {
-        signIn: (state, action) => {
-            // {type: 'SIGN_IN', payload: token}
-            const newUserConnexion = {
-                token: action.payload
-            }
-            state.push(newUserConnexion);
+        addToken: (state, action) => {
+            state.token = action.payload.token;
         },
-        signOut: () => {}
+        addProfile: (state, action) => {
+            state.profile = action.payload.profile;
+        },
+        signOut: (state) => {
+            state.token = '';
+            state.profile = {};
+        }
     }
-})
+});
+
+export const { reducer } = userSlice;
+
+export const store = configureStore({
+    reducer: {
+        userConnexion: reducer
+    }
+});
