@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 const SignInForm = () => {
   const [userEmail, setUserEmail] = useState("");
@@ -7,12 +8,15 @@ const SignInForm = () => {
   const loginApiUrl = "http://localhost:3001/api/v1/user/login";
   const profileApiUrl = "http://localhost:3001/api/v1/user/profile";
 
+  const navigate = useNavigate();
+
   const dispatch = useDispatch();
   const storeData = useSelector((state) => state.userConnexion);
 
+
   useEffect(() => {
-    console.log("Nouvel état après dispatch :", storeData);
-  }, [storeData]);
+    console.log("Nouvel état après dispatch :", storeData.token);
+  }, [storeData.token]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -32,48 +36,19 @@ const SignInForm = () => {
       if (response.ok) {
         const responseData = await response.json();
         const { token } = responseData.body;
-        localStorage.setItem("token", token);
+        // localStorage.setItem("token", token);
         dispatch({
           type: "userConnexion/addToken",
           payload: {
             token: token
           }
         })
+        
+        navigate("/user");
+        // window.location.href = "/user";
 
+        console.log("TOKEN avant la requête du profil :", storeData.token);
 
-        try {
-          const storedToken = localStorage.getItem("token");
-          const profile = await fetch(profileApiUrl, {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${storedToken}`,
-            },
-          });
-
-          if (profile.ok) {
-            console.log("La requête du profil a réussi");
-            const profileData = await profile.json();
-            const { body: profileInfos } = profileData;
-            console.log("Profil reçu :", profileInfos);
-            localStorage.setItem("profile", JSON.stringify(profileInfos));
-            dispatch({
-              type: "userConnexion/addProfile",
-              payload: {
-                profile: JSON.stringify(profileInfos)}
-            })
-          } else {
-            console.error(
-              "Erreur de la requête API:",
-              profile.status,
-              profile.statusText
-            );
-          }
-        } catch (error) {
-          console.error("Erreur lors de la requête API", error);
-        }
-
-        window.location.href = "/user";
       } else {
         console.error("Identifiants incorrects");
       }
