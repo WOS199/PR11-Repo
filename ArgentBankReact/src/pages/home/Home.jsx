@@ -8,8 +8,8 @@ const Home = () => {
     <>
       <Layout>
         <Hero />
-        <section class="features">
-          <h2 class="sr-only">Features</h2>
+        <section className="features">
+          <h2 className="sr-only">Features</h2>
           <FeatureItem
             imgSrc="../../src/assets/img/icon-chat.png"
             imgAlt="Chat icon"
