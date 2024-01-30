@@ -16,6 +16,9 @@ const userSlice = createSlice({
         signOut: (state) => {
             state.token = '';
             state.profile = {};
+        },
+        updateUserName: (state, action) => {
+            state.profile.userName = action.payload.userName;
         }
     }
 });

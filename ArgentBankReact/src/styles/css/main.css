@@ -168,6 +168,18 @@ body, #root {
   color: #fff;
 }
 
+.cancel-button {
+  display: block;
+  width: 100%;
+  padding: 8px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  margin-top: 1rem;
+  border-color: #e4392c;
+  background-color: #e4392c;
+  color: #fff;
+}
+
 .sign-in-content {
   box-sizing: border-box;
   background-color: white;
@@ -265,6 +277,17 @@ body, #root {
 .header {
   color: #fff;
   margin-bottom: 2rem;
+}
+
+.edit-profile-label {
+  color: #2c3e50;
+}
+
+.desactivated-input {
+  background-color: #ccc;
+  &:focus {
+    outline: none;
+  }
 }
 
 .transaction-button {
