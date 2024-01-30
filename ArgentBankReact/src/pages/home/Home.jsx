@@ -1,6 +1,5 @@
 import Hero from "../../components/Hero/hero";
 import FeatureItem from "../../components/featureItem/FeatureItem";
-import Nav from "../../components/nav/Nav";
 import Layout from "../../layout/Layout";
 
 const Home = () => {

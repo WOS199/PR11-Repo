@@ -6,13 +6,9 @@ const SignInForm = () => {
   const [userEmail, setUserEmail] = useState("");
   const [password, setPassword] = useState("");
   const loginApiUrl = "http://localhost:3001/api/v1/user/login";
-  const profileApiUrl = "http://localhost:3001/api/v1/user/profile";
-
   const navigate = useNavigate();
-
   const dispatch = useDispatch();
   const storeData = useSelector((state) => state.userConnexion);
-
 
   useEffect(() => {
     console.log("Nouvel état après dispatch :", storeData.token);
@@ -36,7 +32,6 @@ const SignInForm = () => {
       if (response.ok) {
         const responseData = await response.json();
         const { token } = responseData.body;
-        // localStorage.setItem("token", token);
         dispatch({
           type: "userConnexion/addToken",
           payload: {
@@ -45,7 +40,6 @@ const SignInForm = () => {
         })
         
         navigate("/user");
-        // window.location.href = "/user";
 
         console.log("TOKEN avant la requête du profil :", storeData.token);
 

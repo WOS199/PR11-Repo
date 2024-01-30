@@ -3,11 +3,10 @@ import Layout from "../../layout/Layout";
 import { Navigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect } from "react";
+import UserHeader from "../../components/userHeader/UserHeader";
 
 const User = () => {
-  // const token = localStorage.getItem("token");
   const storedToken = useSelector((state) => state.userConnexion.token);
-  // console.log('TOKEN :', storedToken);
   
   const dispatch = useDispatch();
   const storeData = useSelector((state) => state.userConnexion);
@@ -61,14 +60,7 @@ const User = () => {
   return (
     <Layout>
       <div className="main bg-dark">
-        <div className="header">
-          <h1>
-            Welcome back
-            <br />
-            Tony Jarvis!
-          </h1>
-          <button className="edit-button">Edit Name</button>
-        </div>
+        <UserHeader />
         <h2 className="sr-only">Accounts</h2>
         <Account
           accName="Argent Bank Checking"
