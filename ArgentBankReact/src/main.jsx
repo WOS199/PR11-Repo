@@ -5,7 +5,7 @@ import Home from './pages/home/Home.jsx'
 import SignIn from './pages/signIn/SignIn.jsx'
 import User from './pages/user/User.jsx'
 import { Provider } from "react-redux";
-import { store } from "./redux";
+import { store } from "./app/store.js";
 
 const route = createBrowserRouter([
   {

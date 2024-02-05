@@ -6,10 +6,10 @@ import { useEffect } from "react";
 import UserHeader from "../../components/userHeader/UserHeader";
 
 const User = () => {
-  const storedToken = useSelector((state) => state.userConnexion.token);
+  const storedToken = useSelector((state) => state.userManagement.token);
   
   const dispatch = useDispatch();
-  const storeData = useSelector((state) => state.userConnexion);
+  const storeData = useSelector((state) => state.userManagement);
 
   useEffect(() => {
     const fetchUserProfile = async () => {
@@ -30,7 +30,7 @@ const User = () => {
             const { body: profileInfos } = profileData;
             console.log("Profil reçu :", profileInfos);
             dispatch({
-              type: "userConnexion/addProfile",
+              type: "userManagement/addProfile",
               payload: {
                 profile: profileInfos,
               }

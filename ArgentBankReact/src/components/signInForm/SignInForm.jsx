@@ -1,54 +1,27 @@
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { signIn } from "../../features/userManagement/userManagementActions";
 
 const SignInForm = () => {
   const [userEmail, setUserEmail] = useState("");
   const [password, setPassword] = useState("");
-  const loginApiUrl = "http://localhost:3001/api/v1/user/login";
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const storeData = useSelector((state) => state.userConnexion);
+  const storeData = useSelector((state) => state.userManagement);
 
   useEffect(() => {
     console.log("Nouvel état après dispatch :", storeData.token);
   }, [storeData.token]);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-
-    try {
-      const response = await fetch(loginApiUrl, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email: userEmail,
-          password: password,
-        }),
-      });
-
-      if (response.ok) {
-        const responseData = await response.json();
-        const { token } = responseData.body;
-        dispatch({
-          type: "userConnexion/addToken",
-          payload: {
-            token: token
-          }
-        })
-        
+    dispatch(signIn(userEmail, password))
+      .then(() => {
         navigate("/user");
-
-        console.log("TOKEN avant la requête du profil :", storeData.token);
-
-      } else {
-        console.error("Identifiants incorrects");
-      }
-    } catch (error) {
-      console.error("Erreur lors de la requête API", error);
-    }
+        console.log("TOKEN après la requête du profil :", storeData.token);
+        console.log('PROFILE :', storeData.profile);
+      });
   };
 
   return (

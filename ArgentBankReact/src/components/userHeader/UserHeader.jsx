@@ -2,12 +2,10 @@ import { useSelector, useDispatch } from "react-redux";
 import { useState, useEffect } from "react";
 
 const UserHeader = () => {
-  const storedProfile = useSelector((state) => state.userConnexion.profile);
-  const storedToken = useSelector((state) => state.userConnexion.token);
+  const storedProfile = useSelector((state) => state.userManagement.profile);
   const firstName = storedProfile.firstName;
   const lastName = storedProfile.lastName;
   const userName = storedProfile.userName;
-  const userNameApiUrl = "http://localhost:3001/api/v1/user/profile";
   const dispatch = useDispatch();
 
   const [isOpened, setIsOpened] = useState(false);
@@ -18,32 +16,10 @@ const UserHeader = () => {
     setIsOpened(!isOpened);
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-
-    try {
-      const response = await fetch(userNameApiUrl, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${storedToken}`,
-        },
-        body: JSON.stringify({
-          userName: newUserName,
-        }),
-      });
-
-      if (response.ok) {
-        dispatch({
-          type: "userConnexion/updateUserName",
-          payload: {
-            userName: newUserName,
-          },
-        });
-      }
-    } catch (error) {
-      console.error("Erreur lors de la requête API", error);
-    }
+    console.log('APPEL DE LA FONCTION')
+    dispatch(setNewUserName(newUserName))
   };
 
   useEffect(() => {

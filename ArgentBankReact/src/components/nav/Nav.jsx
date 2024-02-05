@@ -3,8 +3,8 @@ import { useSelector, useDispatch } from "react-redux";
 
 const Nav = () => {
   const dispatch = useDispatch();
-  const storedToken = useSelector((state) => state.userConnexion.token);
-  const storedProfile = useSelector((state) => state.userConnexion.profile);
+  const storedToken = useSelector((state) => state.userManagement.token);
+  const storedProfile = useSelector((state) => state.userManagement.profile);
   const navigate = useNavigate();
 
   const handleNav = () => {
@@ -13,7 +13,7 @@ const Nav = () => {
 
   const handleSignOut = () => {
     dispatch({
-      type: "userConnexion/signOut",
+      type: "userManagement/signOut",
     });
     navigate("/");
   };
