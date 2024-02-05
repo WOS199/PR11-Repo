@@ -1,6 +1,7 @@
 import { addToken, addProfile, updateUserName } from "./userManagementSlice";
 
 export const signIn = (userEmail, password) => async (dispatch) => {
+    console.log('SIGNIN THUNK')
   try {
     const response = await fetch("http://localhost:3001/api/v1/user/login", {
       method: "POST",
@@ -17,8 +18,6 @@ export const signIn = (userEmail, password) => async (dispatch) => {
       const responseData = await response.json();
       const { token } = responseData.body;
       dispatch(addToken({ token }));
-
-      // Appeler la fonction pour récupérer le profil après avoir obtenu le token
       dispatch(fetchUserProfile(token));
     } else {
       console.error("Identifiants incorrects");
@@ -28,35 +27,29 @@ export const signIn = (userEmail, password) => async (dispatch) => {
   }
 };
 
-export const setNewUserName = (newUserName) => (dispatch, getState) => {
-    /* const storedToken = getState().userManagement.token;
-    const userNameApiUrl = "http://localhost:3001/api/v1/user/profile"; */
+export const updateUserNameAsync = (newUserName, storedToken) => async (dispatch) => {
+    const userNameApiUrl = "http://localhost:3001/api/v1/user/profile";
   
-    // Dispatch immédiatement pour mettre à jour le nom d'utilisateur
-    // dispatch(updateUserName({ userName: newUserName }));
+    try {
+      const response = await fetch(userNameApiUrl, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${storedToken}`,
+        },
+        body: JSON.stringify({
+          userName: newUserName,
+        }),
+      });
   
-    // Effectuer la requête asynchrone pour mettre à jour le profil
-    /* fetch(userNameApiUrl, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${storedToken}`,
-      },
-      body: JSON.stringify({
-        userName: newUserName,
-      }),
-    })
-      .then(response => {
-        if (response.ok) {
-          // Dispatch pour mettre à jour le profil après la requête asynchrone
-          dispatch(fetchUserProfile(storedToken));
-        } else {
-          console.error("Erreur lors de la requête API (non OK)");
-        }
-      })
-      .catch(error => {
-        console.error("Erreur lors de la requête API", error);
-      }); */
+      if (response.ok) {
+        // Si la requête API réussit, dispatchez l'action avec le nouveau nom d'utilisateur
+        dispatch(updateUserName({ userName: newUserName }));
+      }
+    } catch (error) {
+      console.error("Erreur lors de la requête API", error);
+      // Gérez les erreurs ici si nécessaire
+    }
   };
 
 export const fetchUserProfile = (token) => async (dispatch) => {

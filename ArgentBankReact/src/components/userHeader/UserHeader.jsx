@@ -1,5 +1,6 @@
 import { useSelector, useDispatch } from "react-redux";
 import { useState, useEffect } from "react";
+import { updateUserNameAsync } from "../../features/userManagement/userManagementActions";
 
 const UserHeader = () => {
   const storedProfile = useSelector((state) => state.userManagement.profile);
@@ -10,6 +11,7 @@ const UserHeader = () => {
 
   const [isOpened, setIsOpened] = useState(false);
   const [newUserName, setNewUserName] = useState("");
+  const storedToken = useSelector((state) => state.userManagement.token);
 
   const handleForm = (e) => {
     e.preventDefault();
@@ -19,7 +21,7 @@ const UserHeader = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log('APPEL DE LA FONCTION')
-    dispatch(setNewUserName(newUserName))
+    dispatch(updateUserNameAsync(newUserName, storedToken));
   };
 
   useEffect(() => {
