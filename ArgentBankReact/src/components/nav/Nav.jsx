@@ -1,4 +1,23 @@
+import { useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+
 const Nav = () => {
+  const dispatch = useDispatch();
+  const storedToken = useSelector((state) => state.userManagement.token);
+  const storedProfile = useSelector((state) => state.userManagement.profile);
+  const navigate = useNavigate();
+
+  const handleNav = () => {
+    !storedToken && navigate("/signIn");
+  };
+
+  const handleSignOut = () => {
+    dispatch({
+      type: "userManagement/signOut",
+    });
+    navigate("/");
+  };
+
   return (
     <nav className="main-nav">
       <a className="main-nav-logo" href="/">
@@ -10,13 +29,19 @@ const Nav = () => {
         <h1 className="sr-only">Argent Bank</h1>
       </a>
       <div>
-        <a className="main-nav-item" href="/signIn">
+        <a className="main-nav-item" href="#" onClick={handleNav}>
           <i className="fa fa-user-circle"></i>
-          Sign In
+          {!storedToken ? "Sign In" : storedProfile.userName}
         </a>
+        {storedToken && (
+          <a className="main-nav-item" href="#" onClick={handleSignOut}>
+            <i className="fa fa-sign-out"></i>
+            Sign Out
+          </a>
+        )}
       </div>
     </nav>
   );
-}
+};
 
 export default Nav;
