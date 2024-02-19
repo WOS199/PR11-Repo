@@ -2,57 +2,15 @@ import Account from "../../components/account/Account";
 import Layout from "../../layout/Layout";
 import { Navigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { useEffect } from "react";
 import UserHeader from "../../components/userHeader/UserHeader";
+import { fetchUserProfile } from "../../features/userManagement/userManagementActions";
 
 const User = () => {
   const storedToken = useSelector((state) => state.userManagement.token);
-  
   const dispatch = useDispatch();
-  const storeData = useSelector((state) => state.userManagement);
 
-  useEffect(() => {
-    const fetchUserProfile = async () => {
-      if (storedToken) {
-        try {
-          const profileApiUrl = "http://localhost:3001/api/v1/user/profile";
-          const profile = await fetch(profileApiUrl, {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${storedToken}`,
-            },
-          });
-
-          if (profile.ok) {
-            console.log("La requête du profil a réussi");
-            const profileData = await profile.json();
-            const { body: profileInfos } = profileData;
-            console.log("Profil reçu :", profileInfos);
-            dispatch({
-              type: "userManagement/addProfile",
-              payload: {
-                profile: profileInfos,
-              }
-            })
-          } else {
-            console.error(
-              "Erreur de la requête API:",
-              profile.status,
-              profile.statusText
-            );
-          }
-        } catch (error) {
-          console.error("Erreur lors de la requête API", error);
-        }
-      }
-    };
-
-    fetchUserProfile();
-  }, [storedToken, dispatch]);
-
-  console.log('PROFILE :', storeData.profile);
-
+  dispatch(fetchUserProfile(storedToken));
+  
   if (!storedToken) {
     return <Navigate to="/signIn" />;
   }

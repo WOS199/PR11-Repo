@@ -54,6 +54,7 @@ paths:
           description: Access denied
         '500':
           description: Internal Server Error
+  /accounts/transaction:
     post:
       security:
         - Bearer: []
@@ -79,57 +80,7 @@ paths:
           description: Access denied
         '500':
           description: Internal Server Error
-    put:
-      security:
-        - Bearer: []
-      tags:
-        - Transactions Module
-      summary: Update
-      description: API for updating a transaction
-      parameters:
-        - in: body
-          name: body
-          description: Update transaction note
-          required: true
-          schema:
-            $ref: '#/definitions/Transaction'
-      produces:
-        - application/json
-      responses:
-        '200':
-          description: Transaction updated successfully
-          schema:
-            $ref: '#/definitions/ApiResponse'
-        '400':
-          description: Access denied
-        '500':
-          description: Internal Server Error
-    delete:
-      security:
-        - Bearer: []
-      tags:
-        - Transactions Module
-      summary: User accounts API
-      description: API for updating a transaction
-      parameters:
-        - in: body
-          name: body
-          description: Update transaction note
-          required: true
-          schema:
-            $ref: '#/definitions/TransactionNote'
-      produces:
-        - application/json
-      responses:
-        '200':
-          description: Transaction updated successfully
-          schema:
-            $ref: '#/definitions/ApiResponse'
-        '400':
-          description: Access denied
-        '500':
-          description: Internal Server Error
-  /accounts/transaction:
+  /accounts/transactions/{id}:
     get:
       security:
         - Bearer: []
@@ -138,12 +89,11 @@ paths:
       summary: User accounts API
       description: API for reading a specific transaction
       parameters:
-        - in: body
-          name: body
-          description: Fetching a transaction by its id
+        - name: id
+          in: path
           required: true
-          schema:
-            $ref: '#/definitions/TransactionId'
+          type: string
+          description: Unique ID of the transaction to be updated
       #produces:
        # - application/json
       responses:
@@ -153,6 +103,45 @@ paths:
             type: array
             items:
               $ref: '#/definitions/Transaction'
+        '400':
+          description: Access denied
+        '500':
+          description: Internal Server Error
+    put:
+      security:
+        - Bearer: []
+      tags:
+        - Transactions Module
+      summary: Update
+      description: API for updating a transaction
+      parameters:
+        - name: id
+          in: path
+          required: true
+          type: string
+          description: Unique ID of the transaction to be updated
+        - name: body
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              type:
+                type: string
+                description: Type of the transaction
+              category:
+                type: string
+                description: Category of the transaction
+            required:
+              - type
+              - category
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Transaction updated successfully
+          schema:
+            $ref: '#/definitions/ApiResponse'
         '400':
           description: Access denied
         '500':

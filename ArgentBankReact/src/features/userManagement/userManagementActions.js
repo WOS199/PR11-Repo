@@ -1,7 +1,6 @@
 import { addToken, addProfile, updateUserName } from "./userManagementSlice";
 
 export const signIn = (userEmail, password) => async (dispatch) => {
-    console.log('SIGNIN THUNK')
   try {
     const response = await fetch("http://localhost:3001/api/v1/user/login", {
       method: "POST",
@@ -18,12 +17,13 @@ export const signIn = (userEmail, password) => async (dispatch) => {
       const responseData = await response.json();
       const { token } = responseData.body;
       dispatch(addToken({ token }));
-      dispatch(fetchUserProfile(token));
     } else {
       console.error("Identifiants incorrects");
+      throw new Error("Identifiants incorrects");
     }
   } catch (error) {
     console.error("Erreur lors de la requête API", error);
+    throw new Error("Identifiants incorrects");
   }
 };
 
@@ -43,12 +43,10 @@ export const updateUserNameAsync = (newUserName, storedToken) => async (dispatch
       });
   
       if (response.ok) {
-        // Si la requête API réussit, dispatchez l'action avec le nouveau nom d'utilisateur
         dispatch(updateUserName({ userName: newUserName }));
       }
     } catch (error) {
       console.error("Erreur lors de la requête API", error);
-      // Gérez les erreurs ici si nécessaire
     }
   };
 
@@ -64,10 +62,8 @@ export const fetchUserProfile = (token) => async (dispatch) => {
     });
 
     if (profile.ok) {
-      console.log("La requête du profil a réussi");
       const profileData = await profile.json();
       const { body: profileInfos } = profileData;
-      console.log("Profil reçu :", profileInfos);
       dispatch(addProfile({ profile: profileInfos }));
     } else {
       console.error(
