@@ -51,9 +51,40 @@ paths:
             items:
               $ref: '#/definitions/Transaction'
         '400':
-          description: Access denied
+          description: Bad request. Synthax problem in the request.
+        '401':
+          description: Unauthorized. Authorization information is missing or invalid.
+        '404':
+          description: Not found.
         '500':
-          description: Internal Server Error
+          description: Unexpected internal server error.
+  /accounts/{accountId}:
+    get:
+      security:
+        - Bearer: []
+      tags:
+        - Account Module
+      summary: Get a specific account
+      description: API for fetching a specific account
+      parameters:
+        - name: accountId
+          in: path
+          required: true
+          description: ID of the account to retrieve
+          type: string
+      responses:
+        '200':
+          description: Account retrieved successfully
+          schema:
+            $ref: '#/definitions/Account'
+        '400':
+          description: Bad request. Synthax problem in the request.
+        '401':
+          description: Unauthorized. Authorization information is missing or invalid.
+        '404':
+          description: Not found.
+        '500':
+          description: Unexpected internal server error.
   /accounts/transaction:
     post:
       security:
@@ -73,13 +104,17 @@ paths:
         - application/json
       responses:
         '200':
-          description: Transaction updated successfully
+          description: Transaction retrieved successfully
           schema:
             $ref: '#/definitions/ApiResponse'
         '400':
-          description: Access denied
+          description: Bad request. Synthax problem in the request.
+        '401':
+          description: Unauthorized. Authorization information is missing or invalid.
+        '404':
+          description: Not found.
         '500':
-          description: Internal Server Error
+          description: Unexpected internal server error.
   /accounts/transactions/{id}:
     get:
       security:
@@ -98,15 +133,19 @@ paths:
        # - application/json
       responses:
         '200':
-          description: Accounts and transactions retrieved
+          description: Transaction retrieved successfully.
           schema:
             type: array
             items:
               $ref: '#/definitions/Transaction'
         '400':
-          description: Access denied
+          description: Bad request. Synthax problem in the request.
+        '401':
+          description: Unauthorized. Authorization information is missing or invalid.
+        '404':
+          description: Not found.
         '500':
-          description: Internal Server Error
+          description: Unexpected internal server error.
     put:
       security:
         - Bearer: []
@@ -143,9 +182,13 @@ paths:
           schema:
             $ref: '#/definitions/ApiResponse'
         '400':
-          description: Access denied
+          description: Bad request. Synthax problem in the request.
+        '401':
+          description: Unauthorized. Authorization information is missing or invalid.
+        '404':
+          description: Not found.
         '500':
-          description: Internal Server Error
+          description: Unexpected internal server error.
   /user/signup:
     post:
       tags:
@@ -295,13 +338,14 @@ definitions:
     properties:
       userName:
         type: string
-  TransactionNote:
-    type: object
+  Account:
     properties:
-      note:
+      accountId:
         type: string
-  TransactionId:
-    type: object
-    properties:
-      Id:
+        description: unic Id of the account
+      accountName:
         type: string
+        description: name of the account
+      accountBalance:
+        type: number
+        description: available balance of the account
